@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
-  <title>경향신문 80년사</title>
+  <title>80년사</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -50,11 +50,11 @@
 <body>
   <div id="loading">
     <div class="spinner"></div>
-    <div>전자책을 불러오는 중입니다...</div>
+    <div>로딩 중입니다...</div>
   </div>
 
   <iframe id="viewer"
-          title="경향신문 80년사"
+          title="80년사"
           allow="fullscreen"
           allowfullscreen></iframe>
 
@@ -72,8 +72,6 @@
       });
 
       viewer.src = EBOOK_URL;
-
-      // 우클릭 방지 (소스 확인을 완전히 막지는 못함)
       document.addEventListener('contextmenu', function (e) {
         e.preventDefault();
       });
