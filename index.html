@@ -1,48 +1,83 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>전자책 iframe 테스트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>경향신문 80년사</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      margin: 0;
       width: 100%;
       height: 100%;
-      font-family: Arial, sans-serif;
+      overflow: hidden;
+      background: #1a1a1a;
+      font-family: "Pretendard", "Malgun Gothic", sans-serif;
     }
-
-    .header {
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      background: #2563eb;
-      color: white;
-    }
-
-    iframe {
-      display: block;
+    #viewer {
+      position: fixed;
+      inset: 0;
       width: 100%;
-      height: calc(100vh - 50px);
-      border: 3px solid red;
-      box-sizing: border-box;
+      height: 100%;
+      border: 0;
+      opacity: 0;
+      transition: opacity .3s;
     }
+    #viewer.loaded { opacity: 1; }
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: #ccc;
+      font-size: 14px;
+    }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid #444;
+      border-top-color: #ccc;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
-  <div class="header">
-    <strong>전자책 iframe 테스트</strong>
-    <button onclick="document.getElementById('book').src =
-      document.getElementById('book').src">새로고침</button>
+  <div id="loading">
+    <div class="spinner"></div>
+    <div>전자책을 불러오는 중입니다...</div>
   </div>
 
-  <iframe
-    id="book"
-    src="https://ebook.gointro.com/books/faen/"
-    title="전자책">
-  </iframe>
+  <iframe id="viewer"
+          title="경향신문 80년사"
+          allow="fullscreen"
+          allowfullscreen></iframe>
+
+  <script>
+    (function () {
+      // 전자책 주소 (https 사용 - 회사 페이지가 https면 http 주소는 차단됨)
+      var EBOOK_URL = 'https://online.fliphtml5.com/gyjfg/faen/';
+
+      var viewer = document.getElementById('viewer');
+      var loading = document.getElementById('loading');
+
+      viewer.addEventListener('load', function () {
+        viewer.classList.add('loaded');
+        loading.style.display = 'none';
+      });
+
+      viewer.src = EBOOK_URL;
+
+      // 우클릭 방지 (소스 확인을 완전히 막지는 못함)
+      document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
+    })();
+  </script>
 </body>
 </html>
