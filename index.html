@@ -4,77 +4,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>전자책 바로가기</title>
-
+  <title>전자책</title>
   <style>
     * {
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 420px;
-      padding: 36px 24px;
-      text-align: center;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #1f2937;
-    }
-
-    p {
-      margin-bottom: 24px;
-      color: #6b7280;
-    }
-
-    .ebook-button {
       width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
       background: #2563eb;
       color: white;
+    }
+
+    .header h3 {
+      margin: 0;
       font-size: 16px;
+    }
+
+    .header button {
+      padding: 7px 12px;
+      border: 0;
+      border-radius: 5px;
       cursor: pointer;
     }
 
-    .ebook-button:hover {
-      background: #1d4ed8;
+    iframe {
+      display: block;
+      width: 100%;
+      height: calc(100% - 48px);
+      border: 0;
+    }
+
+    .message {
+      padding: 20px;
+      text-align: center;
+      color: #555;
     }
   </style>
 </head>
-
 <body>
-  <main class="container">
-    <h2>전자책 바로가기</h2>
-    <p>아래 버튼을 눌러 전자책을 열어주세요.</p>
+  <header class="header">
+    <h3>전자책</h3>
+    <button id="reloadBtn" type="button">새로고침</button>
+  </header>
 
-    <button type="button" class="ebook-button" id="ebookBtn">
-      전자책 열기
-    </button>
-  </main>
+  <iframe
+    id="ebookFrame"
+    src="http://ebook.gointro.com/books/faen/"
+    title="전자책">
+  </iframe>
 
   <script>
-    "use strict";
-
-    const ebookUrl = "http://ebook.gointro.com/books/faen/";
-
-    document.getElementById("ebookBtn").addEventListener("click", function () {
-      window.location.href = ebookUrl;
+    document.getElementById("reloadBtn").addEventListener("click", () => {
+      const frame = document.getElementById("ebookFrame");
+      frame.src = frame.src;
     });
   </script>
 </body>
