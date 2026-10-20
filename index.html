@@ -3,74 +3,46 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>전자책</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>전자책 iframe 테스트</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     html, body {
       margin: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
       font-family: Arial, sans-serif;
     }
 
     .header {
-      height: 48px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
+      padding: 0 15px;
       background: #2563eb;
       color: white;
-    }
-
-    .header h3 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .header button {
-      padding: 7px 12px;
-      border: 0;
-      border-radius: 5px;
-      cursor: pointer;
     }
 
     iframe {
       display: block;
       width: 100%;
-      height: calc(100% - 48px);
-      border: 0;
-    }
-
-    .message {
-      padding: 20px;
-      text-align: center;
-      color: #555;
+      height: calc(100vh - 50px);
+      border: 3px solid red;
+      box-sizing: border-box;
     }
   </style>
 </head>
 <body>
-  <header class="header">
-    <h3>전자책</h3>
-    <button id="reloadBtn" type="button">새로고침</button>
-  </header>
+  <div class="header">
+    <strong>전자책 iframe 테스트</strong>
+    <button onclick="document.getElementById('book').src =
+      document.getElementById('book').src">새로고침</button>
+  </div>
 
   <iframe
-    id="ebookFrame"
+    id="book"
     src="http://ebook.gointro.com/books/faen/"
     title="전자책">
   </iframe>
-
-  <script>
-    document.getElementById("reloadBtn").addEventListener("click", () => {
-      const frame = document.getElementById("ebookFrame");
-      frame.src = frame.src;
-    });
-  </script>
 </body>
 </html>
