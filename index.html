@@ -60,8 +60,8 @@
 
   <script>
     (function () {
-      // 전자책 주소 (https 사용 - 회사 페이지가 https면 http 주소는 차단됨)
-      var EBOOK_URL = 'https://online.fliphtml5.com/gyjfg/faen/';
+      var _k = '==wLuVWYm9yZmpWen9SbvNmL1wWb0hGcpxmZuUmbpxmbv9yL6MHc0RHa';
+      var EBOOK_URL = atob(_k.split('').reverse().join(''));
 
       var viewer = document.getElementById('viewer');
       var loading = document.getElementById('loading');
