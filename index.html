@@ -120,11 +120,15 @@
         loading.style.display = 'none';
         blocked.style.display = 'flex';
 
-        // [확인용] 넘어온 referrer 표시 - 확인 후 아래 4줄 삭제
+        // [확인용] referrer와 UA 표시 - 확인 후 아래 블록 삭제
         var dbg = document.createElement('div');
-        dbg.style.cssText = 'font-size:12px;color:#888;word-break:break-all;padding:0 20px;text-align:center';
-        dbg.textContent = 'referrer: ' + (document.referrer || '(없음)');
+        dbg.style.cssText = 'font-size:12px;color:#888;word-break:break-all;padding:0 20px;text-align:center;line-height:1.6;user-select:text';
+        dbg.appendChild(document.createTextNode('referrer: ' + (document.referrer || '(없음)')));
+        dbg.appendChild(document.createElement('br'));
+        dbg.appendChild(document.createElement('br'));
+        dbg.appendChild(document.createTextNode('UA: ' + navigator.userAgent));
         blocked.appendChild(dbg);
+        // [확인용] 끝
 
         viewer.remove();
         return;
