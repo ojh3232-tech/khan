@@ -70,36 +70,62 @@
     (function () {
       // 이 도메인의 링크를 타고 들어온 경우만 허용
       var ALLOWED = ['gwk.khan.co.kr'];
+      var FLAG = 'khan80_ok';
 
       var viewer = document.getElementById('viewer');
       var loading = document.getElementById('loading');
       var blocked = document.getElementById('blocked');
 
-      function isAllowed() {
-        // 이미 정상 진입한 탭이면 새로고침해도 허용
+      // 이번 진입이 새로고침인지 확인
+      function isReload() {
         try {
-          if (sessionStorage.getItem('khan80_ok') === '1') return true;
-        } catch (e) {}
+          var nav = performance.getEntriesByType('navigation')[0];
+          if (nav) return nav.type === 'reload';
+          return performance.navigation && performance.navigation.type === 1;
+        } catch (e) {
+          return false;
+        }
+      }
 
-        if (!document.referrer) return false;   // 주소 직접 입력, 즐겨찾기 등
-
+      function fromAllowedSite() {
+        if (!document.referrer) return false;   // 주소 직접 입력, 붙여넣기, 즐겨찾기
         var host;
         try { host = new URL(document.referrer).hostname; }
         catch (e) { return false; }
 
         for (var i = 0; i < ALLOWED.length; i++) {
           var d = ALLOWED[i];
-          if (host === d || host.slice(-(d.length + 1)) === '.' + d) {
-            try { sessionStorage.setItem('khan80_ok', '1'); } catch (e) {}
-            return true;
-          }
+          if (host === d || host.slice(-(d.length + 1)) === '.' + d) return true;
         }
+        return false;
+      }
+
+      function isAllowed() {
+        // 1) 허용된 사이트의 링크로 들어온 경우
+        if (fromAllowedSite()) {
+          try { sessionStorage.setItem(FLAG, '1'); } catch (e) {}
+          return true;
+        }
+
+        // 2) 정상 진입했던 탭에서 "새로고침"한 경우만 허용
+        try {
+          if (isReload() && sessionStorage.getItem(FLAG) === '1') return true;
+          sessionStorage.removeItem(FLAG);   // 그 외에는 통과 표시 삭제
+        } catch (e) {}
+
         return false;
       }
 
       if (!isAllowed()) {
         loading.style.display = 'none';
         blocked.style.display = 'flex';
+
+        // [확인용] 넘어온 referrer 표시 - 확인 후 아래 4줄 삭제
+        var dbg = document.createElement('div');
+        dbg.style.cssText = 'font-size:12px;color:#888;word-break:break-all;padding:0 20px;text-align:center';
+        dbg.textContent = 'referrer: ' + (document.referrer || '(없음)');
+        blocked.appendChild(dbg);
+
         viewer.remove();
         return;
       }
