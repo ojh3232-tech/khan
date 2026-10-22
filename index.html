@@ -27,7 +27,7 @@
       transition: opacity .3s;
     }
     #viewer.loaded { opacity: 1; }
-    #loading, #blocked {
+    #loading, #blocked, #mobile {
       position: fixed;
       inset: 0;
       display: flex;
@@ -38,7 +38,9 @@
       color: #ccc;
       font-size: 14px;
     }
-    #blocked { display: none; }
+    #blocked, #mobile { display: none; }
+    #mobile { text-align: center; line-height: 1.6; padding: 0 20px; }
+    #mobile .msg-title { font-size: 17px; color: #eee; font-weight: 600; }
     .spinner {
       width: 36px;
       height: 36px;
@@ -54,6 +56,11 @@
   <div id="loading">
     <div class="spinner"></div>
     <div>로딩 중입니다...</div>
+  </div>
+
+  <div id="mobile">
+    <div class="msg-title">PC에서 접속해 주세요.</div>
+    <div>모바일·태블릿 환경에서는 지원되지 않습니다.</div>
   </div>
 
   <div id="blocked">
@@ -75,6 +82,24 @@
       var viewer = document.getElementById('viewer');
       var loading = document.getElementById('loading');
       var blocked = document.getElementById('blocked');
+      var mobile = document.getElementById('mobile');
+
+      // 모바일·태블릿 판별 (iPad 데스크톱 모드 포함)
+      function isMobile() {
+        var ua = navigator.userAgent || '';
+        if (navigator.userAgentData && navigator.userAgentData.mobile) return true;
+        if (/Android|iPhone|iPad|iPod|Mobile/i.test(ua)) return true;
+        if (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) return true;
+        return false;
+      }
+
+      // 모바일이면 안내 문구만 보여주고 중단
+      if (isMobile()) {
+        loading.style.display = 'none';
+        mobile.style.display = 'flex';
+        viewer.remove();
+        return;
+      }
 
       // 이번 진입이 새로고침인지 확인
       function isReload() {
